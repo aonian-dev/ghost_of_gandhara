@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ImageUpload } from '@/components/ui/image-upload';
 import { ArrowLeft, Save, Plus, Loader2, Edit3, Trash2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Switch } from '@/components/ui/switch';
@@ -57,7 +58,7 @@ export default function AdminBookEditor() {
         .select('*')
         .eq('book_id', book.id)
         .order('order_index', { ascending: true });
-      
+
       if (chaptersData) setChapters(chaptersData);
       setLoading(false);
     }
@@ -142,7 +143,7 @@ export default function AdminBookEditor() {
                 <Input id="slug" name="slug" value={formData.slug || ''} onChange={handleChange} className="bg-background/50" />
               </div>
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="description">Description</Label>
               <textarea
@@ -155,14 +156,18 @@ export default function AdminBookEditor() {
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="cover_image_url">Cover Image URL</Label>
-              <Input id="cover_image_url" name="cover_image_url" value={formData.cover_image_url || ''} onChange={handleChange} placeholder="/hero-bg.jpg" className="bg-background/50" />
-            </div>
+            {/* Cover image — drag & drop */}
+            <ImageUpload
+              label="Cover image"
+              value={formData.cover_image_url || ''}
+              onChange={(url) => setFormData(prev => ({ ...prev, cover_image_url: url }))}
+              aspectClass="aspect-[2/3]"
+              hint="Shown on the book listing and detail page. Ideal ratio is 2:3 (portrait)."
+            />
 
             <div className="flex items-center space-x-2 pt-2">
-              <Switch 
-                id="published" 
+              <Switch
+                id="published"
                 checked={!!formData.published}
                 onCheckedChange={(c) => setFormData(p => ({ ...p, published: c }))}
               />
