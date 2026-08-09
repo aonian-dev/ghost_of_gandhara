@@ -29,9 +29,9 @@ export default function BooksPage() {
     <PageLayout>
       <div className="container mx-auto px-6 py-24 min-h-screen">
         <div className="mb-20 text-center max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-700">
-          <h1 className="font-serif text-5xl md:text-7xl mb-6 text-shadow-glow">The Library</h1>
+          <h1 className="font-serif text-5xl md:text-7xl mb-6 text-shadow-glow">Collezione di libri e capitoli in prosa</h1>
           <p className="font-serif text-xl italic text-foreground/70 leading-relaxed">
-            Chronicles of forgotten eras, bound in digital parchment.
+            Scritti in prosa di Ghost of Gandhara
           </p>
           <div className="divider-ornate text-primary mx-auto mt-8">✦</div>
         </div>
