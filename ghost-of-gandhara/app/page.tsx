@@ -53,9 +53,9 @@ export default function HomePage() {
           </h1>
           <p className="mx-auto mb-12 max-w-2xl font-serif text-xl md:text-2xl italic text-foreground/80 leading-relaxed">
             Ghost of Gandhara è il progetto di uno scrittore underground del <br/>
-            Sud Italia, le cui ispirazioni includono letteratura greca classica, scritti buddhisti, letteratura Russa e Sovietica, romanticismo francese e tedesco. <br/>
-            I miei scritti hanno un tono esistenziale e filosofico; il mio obiettivo è intrecciare i miei interessi nella produzione di una letteratura volta all'edificazione dello spirito.
-            Ambientalismo, Compassione, L´interconnessione dei viventi; Il rapporto tra essere umano e natura, la storia, la psiche. Conflitti e rivoluzioni individuali e planetari. 
+            Sud Italia, le cui ispirazioni includono: letteratura greca classica, scritti buddhisti, letteratura Russa e Sovietica, romanticismo francese e tedesco. <br/>
+            I miei scritti hanno un tono esistenziale e filosofico; il mio obiettivo è intrecciare i miei interessi nella produzione di una letteratura volta all'edificazione dello spirito. <br/>
+            Ambientalismo, Compassione, L´interconnessione dei viventi; Il rapporto tra essere umano e natura, la storia, la psiche. Conflitti e rivoluzioni individuali e globali. 
             I moti della storia e l'ideale di una vita calma e a contatto con la natura. Questi sono alcuni dei temi che affronto nei miei scritti. Sii benvenut#, spero che le mie parole possano lasciarti un qualcosa di positivo.
           
 
