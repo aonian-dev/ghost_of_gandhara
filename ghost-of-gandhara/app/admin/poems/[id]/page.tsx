@@ -9,7 +9,7 @@ import { Poem } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { ArrowLeft, Save, Loader2 } from 'lucide-react';
+import { ArrowLeft, Save, Loader2, ImageIcon } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Switch } from '@/components/ui/switch';
 
@@ -27,6 +27,7 @@ export default function AdminPoemEditor() {
     slug: '',
     content: '',
     excerpt: '',
+    cover_image_url: '',
     published: false,
   });
 
@@ -121,6 +122,35 @@ export default function AdminPoemEditor() {
             <Label htmlFor="excerpt">Excerpt (Short preview)</Label>
             <Input id="excerpt" name="excerpt" value={formData.excerpt || ''} onChange={handleChange} className="bg-background/50 italic font-serif" placeholder="A single line to echo in the halls..." />
           </div>
+
+          {/* Cover image */}
+          <div className="space-y-2 md:col-span-2">
+            <Label htmlFor="cover_image_url" className="flex items-center gap-2">
+              <ImageIcon className="w-4 h-4 text-muted-foreground" /> Cover / Background Image URL
+            </Label>
+            <Input
+              id="cover_image_url"
+              name="cover_image_url"
+              value={formData.cover_image_url || ''}
+              onChange={handleChange}
+              placeholder="https://... or /your-image.jpg"
+              className="bg-background/50"
+            />
+            {formData.cover_image_url && (
+              <div className="mt-2 relative w-full max-w-xs aspect-video overflow-hidden rounded border border-border/40 bg-muted/20">
+                <img
+                  src={formData.cover_image_url}
+                  alt="Cover preview"
+                  className="object-cover w-full h-full"
+                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                />
+              </div>
+            )}
+            <p className="text-xs text-muted-foreground">
+              Used as the background of the poem reader page. Can be a full URL (e.g. from Unsplash) or a path to a file in your <code>public/</code> folder.
+            </p>
+          </div>
+
           <div className="flex items-center space-x-2 md:col-span-2 pt-2">
             <Switch 
               id="published" 
