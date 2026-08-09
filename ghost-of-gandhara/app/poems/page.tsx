@@ -2,74 +2,104 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { supabase } from '@/lib/supabase';
 import { Poem } from '@/types';
-import { Loader2 } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
+import { Loader2, ArrowLeft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
-export default function PoemsPage() {
-  const [poems, setPoems] = useState<Poem[]>([]);
+export default function PoemReaderPage() {
+  const params = useParams<{ poemSlug: string }>();
+  const [poem, setPoem] = useState<Poem | null>(null);
   const [loading, setLoading] = useState(true);
+  const [siteBg, setSiteBg] = useState('/hero-bg.jpg');
 
   useEffect(() => {
-    async function fetchPoems() {
-      const { data } = await supabase
-        .from('poems')
-        .select('*')
-        .eq('published', true)
-        .order('created_at', { ascending: false });
-      
-      if (data) setPoems(data);
+    async function fetchPoem() {
+      if (!params?.poemSlug) return;
+
+      const [poemRes, settingsRes] = await Promise.all([
+        supabase
+          .from('poems')
+          .select('*')
+          .eq('slug', params.poemSlug)
+          .single(),
+        supabase
+          .from('site_settings')
+          .select('value')
+          .eq('key', 'hero_background_url')
+          .single(),
+      ]);
+
+      if (poemRes.data) setPoem(poemRes.data);
+      if (settingsRes.data?.value) setSiteBg(settingsRes.data.value);
       setLoading(false);
     }
-    fetchPoems();
-  }, []);
+    fetchPoem();
+  }, [params?.poemSlug]);
+
+  if (loading) {
+    return (
+      <PageLayout>
+        <div className="flex min-h-screen items-center justify-center text-primary">
+          <Loader2 className="h-8 w-8 animate-spin" />
+        </div>
+      </PageLayout>
+    );
+  }
+
+  if (!poem) {
+    return (
+      <PageLayout>
+        <div className="flex min-h-[60vh] flex-col items-center justify-center text-center">
+          <h1 className="font-serif text-4xl mb-4">Poem not found</h1>
+          <Button variant="link" asChild><Link href="/poems">Return to Archive</Link></Button>
+        </div>
+      </PageLayout>
+    );
+  }
+
+  // Use the poem's own cover image if set, otherwise fall back to the site hero
+  const backgroundImage = poem.cover_image_url || siteBg;
 
   return (
     <PageLayout>
-      <div className="container mx-auto px-6 py-24 min-h-screen max-w-5xl">
-        <div className="mb-24 text-center animate-in fade-in slide-in-from-bottom-4 duration-700">
-          <h1 className="font-serif text-5xl md:text-7xl mb-6 text-shadow-glow">The Poetry Archive</h1>
-          <p className="font-serif text-xl italic text-foreground/70">
-            Fragments of thought, carved in ink.
-          </p>
-          <div className="divider-ornate text-primary mx-auto mt-8">✦</div>
-        </div>
+      <div
+        className="min-h-screen py-16 md:py-24 bg-cover bg-center bg-fixed bg-no-repeat relative"
+        style={{ backgroundImage: `url('${backgroundImage}')` }}
+      >
+        <div className="absolute inset-0 bg-background/95 backdrop-blur-[2px]" />
+        
+        <div className="container relative z-10 mx-auto px-6 max-w-4xl">
+          <div className="mb-12">
+            <Link 
+              href="/poems"
+              className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors font-sans text-sm tracking-wide uppercase"
+            >
+              <ArrowLeft className="w-4 h-4" /> Back to Archive
+            </Link>
+          </div>
 
-        {loading ? (
-          <div className="flex justify-center py-20 text-primary">
-            <Loader2 className="h-8 w-8 animate-spin" />
-          </div>
-        ) : poems.length === 0 ? (
-          <div className="text-center py-20 text-muted-foreground font-serif text-xl italic">
-            No verses have been transcribed yet.
-          </div>
-        ) : (
-          <div className="space-y-16">
-            {poems.map((poem, i) => (
-              <div 
-                key={poem.id}
-                className="animate-in fade-in slide-in-from-bottom-8 duration-700 fill-mode-both"
-                style={{ animationDelay: `${i * 100}ms` }}
-              >
-                <Link href={`/poems/${poem.slug}`} className="group block">
-                  <div className="border-l border-primary/20 pl-8 md:pl-12 py-4 hover:border-primary transition-colors duration-500">
-                    <h2 className="font-serif text-3xl md:text-4xl mb-4 group-hover:text-primary transition-colors">
-                      {poem.title}
-                    </h2>
-                    <p className="font-serif text-lg md:text-xl italic text-muted-foreground leading-relaxed">
-                      "{poem.excerpt || poem.content.substring(0, 150) + '...'}"
-                    </p>
-                    <div className="mt-6 font-sans text-xs tracking-widest uppercase text-primary/60 group-hover:text-primary transition-colors flex items-center gap-2">
-                      Read full poem <span className="opacity-0 group-hover:opacity-100 transition-opacity transition-transform transform translate-x-0 group-hover:translate-x-1">&rarr;</span>
-                    </div>
-                  </div>
-                </Link>
+          <article className="animate-in fade-in slide-in-from-bottom-8 duration-1000">
+            <header className="text-center mb-20">
+              <h1 className="font-serif text-4xl md:text-5xl lg:text-7xl mb-8 text-primary text-shadow-glow">
+                {poem.title}
+              </h1>
+              <div className="divider-ornate text-primary/40 mx-auto">✦</div>
+            </header>
+
+            <div className="max-w-2xl mx-auto bg-card/40 backdrop-blur-md p-8 md:p-16 border border-border/30 rounded-sm shadow-2xl">
+              <div className="font-serif text-xl md:text-2xl leading-loose md:leading-[2.5] text-foreground/90 whitespace-pre-wrap selection:bg-primary/30 selection:text-primary text-center">
+                {poem.content}
               </div>
-            ))}
-          </div>
-        )}
+            </div>
+            
+            <div className="mt-20 flex justify-center">
+               <div className="divider-ornate text-primary/20 w-48">✦</div>
+            </div>
+          </article>
+        </div>
       </div>
     </PageLayout>
   );
