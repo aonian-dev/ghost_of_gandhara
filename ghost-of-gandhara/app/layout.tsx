@@ -26,7 +26,7 @@ export default function RootLayout({
   const [queryClient] = useState(() => new QueryClient());
 
   return (
-    <html lang="en" className={`${cormorant.variable} ${inter.variable}`}>
+    <html lang="it" spellCheck={false} className={`${cormorant.variable} ${inter.variable}`}>
       <body className="min-h-screen bg-background font-serif text-foreground selection:bg-primary/30">
         <QueryClientProvider client={queryClient}>
           <TooltipProvider>
