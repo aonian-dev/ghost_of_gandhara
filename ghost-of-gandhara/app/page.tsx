@@ -52,7 +52,7 @@ export default function HomePage() {
             Ghost of Gandhara
           </h1>
           <p className="mx-auto mb-12 max-w-2xl font-serif text-xl md:text-2xl italic text-foreground/80 leading-relaxed">
-            Ghost of Gandhara è il progetto di uno scrittore underground del Sud Italia, le cui ispirazioni includono letteratura greca classica, scritti buddhisti, letteratura Russa e Sovietica, romanticismo francese e tedesco. <br>
+            Ghost of Gandhara è il progetto di uno scrittore underground del Sud Italia, le cui ispirazioni includono letteratura greca classica, scritti buddhisti, letteratura Russa e Sovietica, romanticismo francese e tedesco. <br/>
 
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
