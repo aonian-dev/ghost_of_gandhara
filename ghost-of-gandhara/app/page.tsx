@@ -11,7 +11,7 @@ import { Card, CardContent } from '@/components/ui/card';
 export default function HomePage() {
   const [books, setBooks] = useState<Book[]>([]);
   const [poems, setPoems] = useState<Poem[]>([]);
-  const [heroBg, setHeroBg] = useState('/hero-bg.jpg');
+  const [heroBg, setHeroBg] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchHomeData() {
@@ -47,11 +47,13 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img
-            src={heroBg}
-            alt="Hero background"
-            className="h-full w-full object-cover opacity-30 mix-blend-overlay"
-          />
+          {heroBg && (
+            <img
+              src={heroBg}
+              alt="Hero background"
+              className="h-full w-full object-cover opacity-30 mix-blend-overlay"
+            />
+          )}
           <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/60 to-background" />
         </div>
         
