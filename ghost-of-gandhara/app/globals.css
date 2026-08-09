@@ -31,6 +31,10 @@
   --radius-lg: var(--radius);
 }
 
+html {
+  font-size: 80%;
+}
+
 :root {
   /* dark parchment palette */
   --background: 35 15% 10%;
