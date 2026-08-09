@@ -11,25 +11,33 @@ import { Card, CardContent } from '@/components/ui/card';
 export default function HomePage() {
   const [books, setBooks] = useState<Book[]>([]);
   const [poems, setPoems] = useState<Poem[]>([]);
+  const [heroBg, setHeroBg] = useState('/hero-bg.jpg');
 
   useEffect(() => {
     async function fetchHomeData() {
-      const { data: booksData } = await supabase
-        .from('books')
-        .select('*')
-        .eq('published', true)
-        .order('created_at', { ascending: false })
-        .limit(3);
+      const [booksRes, poemsRes, settingsRes] = await Promise.all([
+        supabase
+          .from('books')
+          .select('*')
+          .eq('published', true)
+          .order('created_at', { ascending: false })
+          .limit(3),
+        supabase
+          .from('poems')
+          .select('*')
+          .eq('published', true)
+          .order('created_at', { ascending: false })
+          .limit(3),
+        supabase
+          .from('site_settings')
+          .select('value')
+          .eq('key', 'hero_background_url')
+          .single(),
+      ]);
 
-      const { data: poemsData } = await supabase
-        .from('poems')
-        .select('*')
-        .eq('published', true)
-        .order('created_at', { ascending: false })
-        .limit(3);
-
-      if (booksData) setBooks(booksData);
-      if (poemsData) setPoems(poemsData);
+      if (booksRes.data) setBooks(booksRes.data);
+      if (poemsRes.data) setPoems(poemsRes.data);
+      if (settingsRes.data?.value) setHeroBg(settingsRes.data.value);
     }
     fetchHomeData();
   }, []);
@@ -40,7 +48,7 @@ export default function HomePage() {
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
-            src="/hero-bg.jpg"
+            src={heroBg}
             alt="Hero background"
             className="h-full w-full object-cover opacity-30 mix-blend-overlay"
           />
@@ -53,21 +61,19 @@ export default function HomePage() {
           </h1>
           <p className="mx-auto mb-12 max-w-2xl font-serif text-xl md:text-2xl italic text-foreground/80 leading-relaxed">
             Ghost of Gandhara è il progetto di uno scrittore underground del <br/>
-            Sud Italia, le cui ispirazioni includono: letteratura greca classica, scritti buddhisti, letteratura Russa e Sovietica, romanticismo Francese e Tedesco. <br/> <br/>
-            I miei scritti hanno un tono esistenziale e filosofico; il mio obiettivo è intrecciare i miei interessi nella produzione di una letteratura volta all'edificazione dello spirito. <br/>
-            Ambientalismo, Compassione, L´interconnessione dei viventi; Il rapporto tra essere umano e natura, la storia, la psiche. Conflitti e rivoluzioni individuali e globali. 
-            I moti della storia e l'ideale di una vita calma e a contatto con la natura. <br/>
-            Questi sono alcuni dei temi che affronto nei miei scritti. <br/> <br/>
-            Sii benvenut#, spero che le mie parole possano lasciarti un qualcosa di positivo.
-          
-
+              Sud Italia, le cui ispirazioni includono: letteratura greca classica, scritti buddhisti, letteratura Russa e Sovietica, romanticismo Francese e Tedesco. <br/> <br/>
+              I miei scritti hanno un tono esistenziale e filosofico; il mio obiettivo è intrecciare i miei interessi nella produzione di una letteratura volta all'edificazione dello spirito. <br/>
+              Ambientalismo, Compassione, L´interconnessione dei viventi; Il rapporto tra essere umano e natura, la storia, la psiche. Conflitti e rivoluzioni individuali e globali. 
+              I moti della storia e l'ideale di una vita calma e a contatto con la natura. <br/>
+              Questi sono alcuni dei temi che affronto nei miei scritti. <br/> <br/>
+              Sii benvenut#, spero che le mie parole possano lasciarti un qualcosa di positivo.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
             <Button size="lg" className="h-14 px-8 text-lg font-sans tracking-wide" asChild>
-              <Link href="/books">Prosa</Link>
+              <Link href="/books">Explore Books</Link>
             </Button>
             <Button size="lg" variant="outline" className="h-14 px-8 text-lg font-sans tracking-wide" asChild>
-              <Link href="/poems">Poesia</Link>
+              <Link href="/poems">Read Poems</Link>
             </Button>
           </div>
         </div>
