@@ -13,7 +13,7 @@ export default function PoemReaderPage() {
   const params = useParams<{ poemSlug: string }>();
   const [poem, setPoem] = useState<Poem | null>(null);
   const [loading, setLoading] = useState(true);
-  const [siteBg, setSiteBg] = useState('/hero-bg.jpg');
+  const [siteBg, setSiteBg] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchPoem() {
@@ -61,7 +61,7 @@ export default function PoemReaderPage() {
   }
 
   // Use the poem's own cover image if set, otherwise fall back to the site hero
-  const backgroundImage = poem.cover_image_url || siteBg;
+  const backgroundImage = poem.cover_image_url || siteBg || '';
 
   return (
     <PageLayout>
