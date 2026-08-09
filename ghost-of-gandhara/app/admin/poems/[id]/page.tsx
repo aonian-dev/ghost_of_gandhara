@@ -161,7 +161,7 @@ export default function AdminPoemEditor() {
           </div>
         </div>
         
-        <div className="space-y-2 flex-1 flex flex-col min-h-[600px]">
+        <div className="space-y-2 flex-1 flex flex-col min-h-[600px]"> 
           <Label htmlFor="content">Verses (Whitespace is preserved)</Label>
           <textarea
             id="content"
