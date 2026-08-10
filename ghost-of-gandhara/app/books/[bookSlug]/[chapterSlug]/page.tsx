@@ -98,7 +98,7 @@ export default function ChapterReaderPage() {
             <div className="divider-ornate text-primary/40 mx-auto">✦</div>
           </header>
 
-          <div className="prose prose-invert prose-p:font-serif prose-p:text-xl md:prose-p:text-2xl prose-p:leading-loose md:prose-p:leading-[2.2] prose-p:text-foreground/90 mx-auto w-full selection:bg-primary/20 selection:text-primary">
+          <div className="prose prose-invert max-w-none prose-p:font-serif prose-p:text-xl md:prose-p:text-2xl prose-p:leading-loose md:prose-p:leading-[2.2] prose-p:text-foreground/90 mx-auto w-full selection:bg-primary/20 selection:text-primary">
             {chapter.content.split('\n').map((paragraph, i) => {
               if (paragraph.trim() === '') return <br key={i} />;
               return <p key={i} className="mb-8 indent-8">{paragraph}</p>;
