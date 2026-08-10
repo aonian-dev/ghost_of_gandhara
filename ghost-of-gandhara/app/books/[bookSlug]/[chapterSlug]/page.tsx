@@ -90,7 +90,7 @@ export default function ChapterReaderPage() {
         </div>
 
         {/* Reader Content */}
-        <article className="max-w-4xl mx-auto px-6 py-16 md:py-24 animate-in fade-in duration-1000">
+        <article className="max-w-5xl mx-auto px-6 py-16 md:py-24 animate-in fade-in duration-1000">
           <header className="text-center mb-20">
             <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl mb-6 text-primary">
               {chapter.title}
